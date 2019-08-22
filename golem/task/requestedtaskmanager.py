@@ -1,3 +1,4 @@
+import asyncio
 from datetime import timedelta
 import logging
 from pathlib import Path
@@ -272,7 +273,7 @@ class RequestedTaskManager:
             subtask_id=result.subtask_id,
             status=SubtaskStatus.starting,
             payload=result.params,
-            inputs=result.resources,
+            inputs=list(map(str, result.resources)),
             start_time=default_now(),
             price=task.max_price_per_hour,
             computing_node=node,
@@ -362,6 +363,8 @@ class RequestedTaskManager:
             logger.info(
                 'app_client created for app_id=%r, clients=%r',
                 app_id, self._app_clients[app_id])
+            # FIXME Remove when RequestorAppClient.create returns ready service
+            await asyncio.sleep(2)
         return self._app_clients[app_id]
 
     def _get_task_api_service(

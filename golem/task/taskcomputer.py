@@ -320,6 +320,8 @@ class NewTaskComputer:
         )
 
         self._app_client = await ProviderAppClient.create(task_api_service)
+        # FIXME remove when ProviderAppClient.create return ready service
+        await asyncio.sleep(2)
         return await self._app_client.compute(
             task_id=assigned_task.task_id,
             subtask_id=assigned_task.subtask_id,
