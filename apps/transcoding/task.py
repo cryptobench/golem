@@ -124,11 +124,12 @@ class TranscodingTask(CoreTask):  # pylint: disable=too-many-instance-attributes
             validation.validate_video(video_metadata)
 
             src_params = meta.create_params(
-                meta.get_format(video_metadata),
-                meta.get_resolution(video_metadata),
-                meta.get_video_codec(video_metadata),
-                meta.get_audio_codec(video_metadata),
-                meta.get_frame_rate(video_metadata))
+                vformat=meta.get_format(video_metadata),
+                resolution=meta.get_resolution(video_metadata),
+                vcodec=meta.get_video_codec(video_metadata),
+                acodec=meta.get_audio_codec(video_metadata),
+                frame_rate=meta.get_frame_rate(video_metadata),
+                sample_rates=meta.get_sample_rates(video_metadata))
 
             # Get parameters for example subtasks. All subtasks should have
             # the same conversion parameters which we check here, so it doesn't
