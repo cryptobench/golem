@@ -696,14 +696,23 @@ class TaskServer(
             run_benchmarks: bool,
     ) -> Deferred:
         config_changed = yield self.task_computer.change_config(config_desc)
-        if config_changed or run_benchmarks:
-            self.task_computer.lock_config(True)
-            deferred = Deferred()
-            self.benchmark_manager.run_all_benchmarks(
-                deferred.callback, deferred.errback
-            )
-            yield deferred
-            self.task_computer.lock_config(False)
+        if config_changed:
+            self._remove_env_performance_scores()
+        elif not run_benchmarks:
+            return
+
+        self.task_computer.lock_config(True)
+        deferred = Deferred()
+        self.benchmark_manager.run_all_benchmarks(
+            deferred.callback, deferred.errback)
+        yield deferred
+        self.task_computer.lock_config(False)
+
+    def _remove_env_performance_scores(self) -> None:
+        env_manager = self.task_keeper.new_env_manager
+        for env in env_manager.environments():
+            env_id = env.metadata().id
+            env_manager.remove_cached_performance(env_id)
 
     def get_task_computer_root(self):
         return os.path.join(self.client.datadir, "ComputerRes")

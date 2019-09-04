@@ -1,6 +1,7 @@
 import logging
 from typing import Dict, List, NamedTuple, Type, Optional
 
+from peewee import PeeweeException
 from twisted.internet.defer import Deferred, inlineCallbacks
 
 from golem.envs import EnvId, Environment
@@ -116,3 +117,12 @@ class EnvironmentManager:
             return Performance.get(Performance.environment_id == env_id).value
         except Performance.DoesNotExist:
             return None
+
+    @staticmethod
+    def remove_cached_performance(env_id: EnvId) -> None:
+        try:
+            query = Performance.delete().where(
+                Performance.environment_id == env_id)
+            query.execute()
+        except PeeweeException:
+            logger.exception(f"Cannot clear performance score for '{env_id}'")
