@@ -796,6 +796,7 @@ class TestTaskServer(TaskServerTestBase):  # noqa pylint: disable=too-many-publi
 
     def test_new_connection(self, *_):
         ts = self.ts
+        ts.resume()
         tss = tasksession.TaskSession(Mock())
         ts.new_connection(tss)
         assert len(ts.task_sessions_incoming) == 1
