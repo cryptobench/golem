@@ -201,12 +201,7 @@ download () {
 
 # Self-check functions
 
-check_unicode () {
-  test_unicode
-  local RC=$?
-  export UNICODE_SUPPORT=`[ $RC -eq 0 ] && echo "Y" || echo "N"`
-  unset test_unicode
-}
+
 
 check_which () {
   $( which bash > /dev/null 2>&1 )
