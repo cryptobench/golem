@@ -95,16 +95,7 @@ print_banner () {
 
 # Helper functions
 
-test_unicode () {
-  echo -ne "\xe2\x88\xb4\033[6n\033[1K\r"
-  read -d R foo
-  echo -ne "\033[1K\r"
-  echo -e "${foo}" | cut -d \[ -f 2 | cut -d";" -f 2 | (
-    read UNICODE
-    [ $UNICODE -eq 2 ] && return 0
-    [ $UNICODE -ne 2 ] && return 1
-  )
-}
+
 
 run_tput () {
   local arg_1=$1
