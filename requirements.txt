@@ -114,7 +114,6 @@ requests==2.21.0
 rlp==0.6.0
 scrypt==0.8.6
 sdnotify==0.3.2
-secp256k1
 semantic-version==2.6.0
 service-identity==18.1.0
 setproctitle==1.1.10
